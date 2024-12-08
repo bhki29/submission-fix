@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.motion.widget.MotionLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/activity_intro_scene"
+    tools:context=".ui.intro.IntroActivity">
+
+
+    <ImageView
+        android:id="@+id/logoMenu1"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:src="@drawable/login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <TextView
+        android:id="@+id/titleMenu1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/play_fair_display_bold"
+        android:gravity="center_horizontal"
+        android:text="@string/title_slide_1"
+        android:textColor="@color/black"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/logoMenu1"
+        app:layout_constraintStart_toStartOf="@+id/logoMenu1"
+        app:layout_constraintTop_toBottomOf="@+id/logoMenu1" />
+
+    <ImageView
+        android:id="@+id/logoMenu2"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:src="@drawable/login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.3" />
+
+    <TextView
+        android:id="@+id/titleMenu2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/play_fair_display_bold"
+        android:gravity="center_horizontal"
+        android:text="@string/title_slide_1"
+        android:textColor="@color/black"
+        android:textSize="26sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/logoMenu1"
+        app:layout_constraintStart_toStartOf="@+id/logoMenu1"
+        app:layout_constraintTop_toBottomOf="@+id/logoMenu1" />
+
+
+    <Button
+        android:id="@+id/btn_login_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="50dp"
+        android:text="@string/login"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleMenu1" />
+
+    <Button
+        android:id="@+id/btn_register_intro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:text="@string/register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_login_intro" />
+
+
+</androidx.constraintlayout.motion.widget.MotionLayout>

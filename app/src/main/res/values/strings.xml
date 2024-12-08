@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Story App</string>
+    <string name="name">name</string>
+    <string name="register">Register</string>
+    <string name="email">email</string>
+    <string name="password">password</string>
+    <string name="signup">sign up</string>
+    <string name="login">Login</string>
+    <string name="signIn">sign in</string>
+    <string name="error_password_min_8_char">Password must be at least 8 characters</string>
+    <string name="required">required</string>
+    <string name="error_invalid_email">error invalid email</string>
+    <string name="title_slide_1">Lorem ipsum dolor sit amet</string>
+    <string name="image">image</string>
+    <string name="title">title</string>
+    <string name="description">description</string>
+    <string name="result_upload">result_image</string>
+    <string name="gallery">gallery</string>
+    <string name="upload">upload</string>
+    <string name="camera">camera</string>
+    <string name="don_t_have_an_account_register">Don\'t have an account? Register</string>
+    <string name="already_have_an_account_login">Already have an account? Login</string>
+</resources>
