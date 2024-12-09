@@ -10,7 +10,10 @@ import com.bumptech.glide.Glide
 import com.dicoding.submission.storyapp.R
 import com.dicoding.submission.storyapp.data.response.ListStoryItem
 
-class StoryAdapter(private val stories: List<ListStoryItem>) : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
+class StoryAdapter(
+    private val stories: List<ListStoryItem>,
+    private val onItemClick: (String) -> Unit
+) : RecyclerView.Adapter<StoryAdapter.StoryViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StoryViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_story, parent, false)
@@ -20,6 +23,9 @@ class StoryAdapter(private val stories: List<ListStoryItem>) : RecyclerView.Adap
     override fun onBindViewHolder(holder: StoryViewHolder, position: Int) {
         val story = stories[position]
         holder.bind(story)
+        holder.itemView.setOnClickListener {
+            story.id?.let { id -> onItemClick(id) }
+        }
     }
 
     override fun getItemCount(): Int = stories.size
@@ -38,3 +44,4 @@ class StoryAdapter(private val stories: List<ListStoryItem>) : RecyclerView.Adap
         }
     }
 }
+

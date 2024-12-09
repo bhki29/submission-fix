@@ -16,6 +16,7 @@ import com.dicoding.submission.storyapp.data.adapter.StoryAdapter
 import com.dicoding.submission.storyapp.data.pref.DataStoreHelper
 import com.dicoding.submission.storyapp.di.Injection
 import com.dicoding.submission.storyapp.ui.addstory.AddStoryActivity
+import com.dicoding.submission.storyapp.ui.detail.DetailActivity
 import com.dicoding.submission.storyapp.ui.intro.IntroActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
@@ -32,21 +33,33 @@ class StoryActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        storyAdapter = StoryAdapter(emptyList())
+
+        // Initialize adapter with item click listener
+        storyAdapter = StoryAdapter(emptyList()) { storyId ->
+            val intent = Intent(this, DetailActivity::class.java).apply {
+                putExtra("STORY_ID", storyId) // Pass the story ID
+            }
+            startActivity(intent)
+        }
         recyclerView.adapter = storyAdapter
 
-        // Inisialisasi ViewModel
+        // Initialize ViewModel
         val repository = Injection.provideRepository(applicationContext)
         val factory = StoryViewModelFactory(repository)
         storyViewModel = ViewModelProvider(this, factory).get(StoryViewModel::class.java)
 
-        // Observasi LiveData
+        // Observe LiveData
         storyViewModel.isLoading.observe(this) { isLoading ->
             findViewById<ProgressBar>(R.id.progressBar).visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
         storyViewModel.stories.observe(this) { stories ->
-            storyAdapter = StoryAdapter(stories)
+            storyAdapter = StoryAdapter(stories) { storyId ->
+                val intent = Intent(this, DetailActivity::class.java).apply {
+                    putExtra("STORY_ID", storyId)
+                }
+                startActivity(intent)
+            }
             recyclerView.adapter = storyAdapter
         }
 
@@ -54,9 +67,8 @@ class StoryActivity : AppCompatActivity() {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
 
-        // Memulai permintaan untuk mendapatkan cerita
+        // Fetch stories
         storyViewModel.getStories()
-
 
         val fabAddStory: FloatingActionButton = findViewById(R.id.fab_add)
         fabAddStory.setOnClickListener {
@@ -71,7 +83,8 @@ class StoryActivity : AppCompatActivity() {
             }
             val intent = Intent(this, IntroActivity::class.java)
             startActivity(intent)
-            finish() // Tutup MainActivity agar pengguna tidak bisa kembali
+            finish() // Close MainActivity to prevent going back
         }
     }
 }
+

@@ -1,6 +1,7 @@
 package com.dicoding.submission.storyapp.data.repository
 
 import com.dicoding.submission.storyapp.data.pref.UserPreference
+import com.dicoding.submission.storyapp.data.response.StoryDetailResponse
 import com.dicoding.submission.storyapp.data.response.StoryResponse
 import com.dicoding.submission.storyapp.data.retrofit.ApiService
 
@@ -11,6 +12,10 @@ class StoryRepository(
 
     suspend fun getStories(): StoryResponse {
         return apiService.getStories() // Token ditambahkan oleh interceptor
+    }
+
+    suspend fun getStoryDetail(storyId: String): StoryDetailResponse {
+        return apiService.getStoryDetail(storyId)
     }
 
     companion object {
