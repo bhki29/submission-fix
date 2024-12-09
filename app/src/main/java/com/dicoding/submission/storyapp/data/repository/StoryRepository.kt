@@ -1,9 +1,12 @@
 package com.dicoding.submission.storyapp.data.repository
 
 import com.dicoding.submission.storyapp.data.pref.UserPreference
-import com.dicoding.submission.storyapp.data.response.StoryDetailResponse
+import com.dicoding.submission.storyapp.data.response.BaseResponse
 import com.dicoding.submission.storyapp.data.response.StoryResponse
 import com.dicoding.submission.storyapp.data.retrofit.ApiService
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class StoryRepository(
     private val apiService: ApiService,
@@ -14,9 +17,10 @@ class StoryRepository(
         return apiService.getStories() // Token ditambahkan oleh interceptor
     }
 
-    suspend fun getStoryDetail(storyId: String): StoryDetailResponse {
-        return apiService.getStoryDetail(storyId)
+    suspend fun uploadStory(description: String, photo: MultipartBody.Part): BaseResponse {
+        return apiService.uploadStory(description.toRequestBody("text/plain".toMediaType()), photo)
     }
+
 
     companion object {
         @Volatile

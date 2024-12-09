@@ -1,5 +1,6 @@
 package com.dicoding.submission.storyapp.ui.addstory
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -7,8 +8,19 @@ import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import com.dicoding.submission.storyapp.data.pref.DataStoreHelper
+import com.dicoding.submission.storyapp.data.retrofit.ApiConfig
 import com.dicoding.submission.storyapp.databinding.ActivityAddStoryBinding
+import com.dicoding.submission.storyapp.di.FileUtil
 import com.dicoding.submission.storyapp.getImageUri
+import com.dicoding.submission.storyapp.ui.story.StoryActivity
+import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 
 class AddStoryActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAddStoryBinding
@@ -54,6 +66,41 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
     private fun uploadImage() {
-        Toast.makeText(this, "Fitur ini belum tersedia", Toast.LENGTH_SHORT).show()
+        val description = binding.description.text.toString()
+        if (currentImageUri == null || description.isBlank()) {
+            Toast.makeText(this, "Gambar dan deskripsi harus diisi", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        lifecycleScope.launch {
+            try {
+                val token = DataStoreHelper.getToken(applicationContext) ?: ""
+                val apiService = ApiConfig.getApiService(token)
+
+                val contentResolver = applicationContext.contentResolver
+                val file = FileUtil.fromUri(contentResolver, currentImageUri!!)
+
+                val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                val imageMultipart = MultipartBody.Part.createFormData(
+                    "photo",
+                    file.name,
+                    requestImageFile
+                )
+                val descriptionRequestBody = description.toRequestBody("text/plain".toMediaType())
+
+                val response = apiService.uploadStory(descriptionRequestBody, imageMultipart)
+
+                if (!response.error) {
+                    Toast.makeText(this@AddStoryActivity, "Cerita berhasil diunggah", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this@AddStoryActivity, StoryActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this@AddStoryActivity, response.message, Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                Toast.makeText(this@AddStoryActivity, "Terjadi kesalahan: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
