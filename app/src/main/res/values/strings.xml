@@ -21,4 +21,5 @@
     <string name="don_t_have_an_account_register">Don\'t have an account? Register</string>
     <string name="already_have_an_account_login">Already have an account? Login</string>
     <string name="photo">photo detail</string>
+    <string name="welcome_to_story_app">Welcome To Story App</string>
 </resources>

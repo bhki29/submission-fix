@@ -1,7 +1,10 @@
 package com.dicoding.submission.storyapp.ui.intro
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.dicoding.submission.storyapp.data.pref.DataStoreHelper
@@ -40,6 +43,28 @@ class IntroActivity : AppCompatActivity() {
         binding.btnRegisterIntro.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
+        }
+
+        playAnimation()
+    }
+
+    private fun playAnimation() {
+        ObjectAnimator.ofFloat(binding.logoMenu1, View.TRANSLATION_X, -30f, 30f).apply {
+            duration = 6000
+            repeatCount = ObjectAnimator.INFINITE
+            repeatMode = ObjectAnimator.REVERSE
+        }.start()
+
+        val title = ObjectAnimator.ofFloat(binding.titleMenu1, View.ALPHA, 1f).setDuration(500)
+        val btnLogin = ObjectAnimator.ofFloat(binding.btnLoginIntro, View.ALPHA, 1f).setDuration(500)
+        val btnRegister = ObjectAnimator.ofFloat(binding.btnRegisterIntro, View.ALPHA, 1f).setDuration(500)
+
+        AnimatorSet().apply {
+            playSequentially(
+                title,
+                btnLogin,
+                btnRegister)
+            start()
         }
     }
 }

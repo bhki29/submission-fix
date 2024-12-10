@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -11,12 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
-        android:contentDescription="@string/photo" />
+        android:contentDescription="@string/photo"
+        tools:srcCompat="@tools:sample/backgrounds/scenic"/>
 
     <TextView
         android:id="@+id/tv_detail_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/name"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_marginTop="16dp" />
@@ -25,5 +27,6 @@
         android:id="@+id/tv_detail_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="@string/description"
         android:layout_marginTop="8dp" />
 </LinearLayout>
