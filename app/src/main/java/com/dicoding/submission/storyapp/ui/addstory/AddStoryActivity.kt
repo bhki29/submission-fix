@@ -14,6 +14,7 @@ import com.dicoding.submission.storyapp.data.retrofit.ApiConfig
 import com.dicoding.submission.storyapp.databinding.ActivityAddStoryBinding
 import com.dicoding.submission.storyapp.di.FileUtil
 import com.dicoding.submission.storyapp.getImageUri
+import com.dicoding.submission.storyapp.reduceFileImage
 import com.dicoding.submission.storyapp.ui.story.StoryActivity
 import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaType
@@ -78,12 +79,15 @@ class AddStoryActivity : AppCompatActivity() {
                 val apiService = ApiConfig.getApiService(token)
 
                 val contentResolver = applicationContext.contentResolver
-                val file = FileUtil.fromUri(contentResolver, currentImageUri!!)
+                val originalFile = FileUtil.fromUri(contentResolver, currentImageUri!!)
 
-                val requestImageFile = file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                // Kompres file menggunakan reduceFileImage
+                val compressedFile = originalFile.reduceFileImage()
+
+                val requestImageFile = compressedFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
                 val imageMultipart = MultipartBody.Part.createFormData(
                     "photo",
-                    file.name,
+                    compressedFile.name,
                     requestImageFile
                 )
                 val descriptionRequestBody = description.toRequestBody("text/plain".toMediaType())

@@ -66,6 +66,4 @@ dependencies {
     //glide
     implementation (libs.glide)
 
-    // live data
-    implementation("androidx.lifecycle:lifecycle-livedata:2.8.7")
 }
