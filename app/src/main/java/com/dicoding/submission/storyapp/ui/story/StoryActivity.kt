@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,6 +34,11 @@ class StoryActivity : AppCompatActivity() {
 
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
+
+        //toolbar
+        val toolbar: Toolbar = findViewById(R.id.include_toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.title = "Story App"
 
         // Initialize adapter with item click listener
         storyAdapter = StoryAdapter(emptyList()) { storyId ->

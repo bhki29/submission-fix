@@ -23,15 +23,12 @@
         android:layout_margin="8dp"
         android:paddingTop="60dp" />
 
-
     <include
         layout="@layout/toolbar_layout"
         android:id="@+id/include_toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add"

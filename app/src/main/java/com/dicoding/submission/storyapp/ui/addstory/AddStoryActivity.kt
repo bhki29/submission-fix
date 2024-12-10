@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -69,9 +70,12 @@ class AddStoryActivity : AppCompatActivity() {
     private fun uploadImage() {
         val description = binding.description.text.toString()
         if (currentImageUri == null || description.isBlank()) {
-            Toast.makeText(this, "Gambar dan deskripsi harus diisi", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Images and descriptions are required", Toast.LENGTH_SHORT).show()
             return
         }
+
+        binding.progressBarAddStory.visibility = View.VISIBLE
+        binding.uploadButton.isEnabled = false // Disable tombol saat proses berlangsung
 
         lifecycleScope.launch {
             try {
@@ -81,7 +85,7 @@ class AddStoryActivity : AppCompatActivity() {
                 val contentResolver = applicationContext.contentResolver
                 val originalFile = FileUtil.fromUri(contentResolver, currentImageUri!!)
 
-                // Kompres file menggunakan reduceFileImage
+                // compress file in reduceFileImage
                 val compressedFile = originalFile.reduceFileImage()
 
                 val requestImageFile = compressedFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
@@ -95,7 +99,7 @@ class AddStoryActivity : AppCompatActivity() {
                 val response = apiService.uploadStory(descriptionRequestBody, imageMultipart)
 
                 if (!response.error) {
-                    Toast.makeText(this@AddStoryActivity, "Cerita berhasil diunggah", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@AddStoryActivity, "Story successfully uploaded", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this@AddStoryActivity, StoryActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)
@@ -103,7 +107,12 @@ class AddStoryActivity : AppCompatActivity() {
                     Toast.makeText(this@AddStoryActivity, response.message, Toast.LENGTH_SHORT).show()
                 }
             } catch (e: Exception) {
-                Toast.makeText(this@AddStoryActivity, "Terjadi kesalahan: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@AddStoryActivity, "Error occurred : ${e.message}", Toast.LENGTH_SHORT).show()
+            } finally {
+
+                // Sembunyikan progress bar dan enable tombol setelah selesai
+                binding.progressBarAddStory.visibility = View.GONE
+                binding.uploadButton.isEnabled = true
             }
         }
     }
