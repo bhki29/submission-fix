@@ -47,7 +47,6 @@ class LoginActivity : AppCompatActivity() {
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         val txtGoToRegister = findViewById<TextView>(R.id.txtGoToRegister)
 
-        // Buat ApiService tanpa token
         val apiService = ApiConfig.getApiService()
         val repository = AuthRepository(apiService)
         val factory = LoginViewModelFactory(repository)

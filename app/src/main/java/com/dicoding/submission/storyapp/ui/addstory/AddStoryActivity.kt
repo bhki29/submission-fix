@@ -75,7 +75,7 @@ class AddStoryActivity : AppCompatActivity() {
         }
 
         binding.progressBarAddStory.visibility = View.VISIBLE
-        binding.uploadButton.isEnabled = false // Disable tombol saat proses berlangsung
+        binding.uploadButton.isEnabled = false
 
         lifecycleScope.launch {
             try {
@@ -85,7 +85,6 @@ class AddStoryActivity : AppCompatActivity() {
                 val contentResolver = applicationContext.contentResolver
                 val originalFile = FileUtil.fromUri(contentResolver, currentImageUri!!)
 
-                // compress file in reduceFileImage
                 val compressedFile = originalFile.reduceFileImage()
 
                 val requestImageFile = compressedFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
@@ -110,7 +109,6 @@ class AddStoryActivity : AppCompatActivity() {
                 Toast.makeText(this@AddStoryActivity, "Error occurred : ${e.message}", Toast.LENGTH_SHORT).show()
             } finally {
 
-                // Sembunyikan progress bar dan enable tombol setelah selesai
                 binding.progressBarAddStory.visibility = View.GONE
                 binding.uploadButton.isEnabled = true
             }

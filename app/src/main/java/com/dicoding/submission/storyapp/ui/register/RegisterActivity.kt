@@ -32,32 +32,27 @@ class RegisterActivity : AppCompatActivity() {
         val progressBar = findViewById<ProgressBar>(R.id.progressBar)
         val txtGoToLogin = findViewById<TextView>(R.id.txtGoToLogin)
 
-        // Initialize ViewModel
         val apiService = ApiConfig.getApiService()
         val repository = AuthRepository(apiService)
         val factory = RegisterViewModelFactory(repository)
         registerViewModel = ViewModelProvider(this, factory)[RegisterViewModel::class.java]
 
-        // Observe loading state
         registerViewModel.isLoading.observe(this) { isLoading ->
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
-        // Observe messages (success or error)
         registerViewModel.message.observe(this) { message ->
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
 
-        // Observe navigasi ke LoginActivity
         registerViewModel.navigateToLogin.observe(this) { shouldNavigate ->
             if (shouldNavigate) {
                 val intent = Intent(this, LoginActivity::class.java)
                 startActivity(intent)
-                finish()  // Menutup RegisterActivity
+                finish()
             }
         }
 
-        // Handle register button click
         registerButton.setOnClickListener {
             val name = nameEditText.text.toString().trim()
             val email = emailEditText.text.toString().trim()
@@ -70,7 +65,6 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        // TextView untuk pindah ke LoginActivity
         txtGoToLogin.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)

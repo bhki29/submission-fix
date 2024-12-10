@@ -35,12 +35,10 @@ class StoryActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        //toolbar
         val toolbar: Toolbar = findViewById(R.id.include_toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.title = "Story App"
 
-        // Initialize adapter with item click listener
         storyAdapter = StoryAdapter(emptyList()) { storyId ->
             val intent = Intent(this, DetailActivity::class.java).apply {
                 putExtra("STORY_ID", storyId) // Pass the story ID
@@ -49,12 +47,10 @@ class StoryActivity : AppCompatActivity() {
         }
         recyclerView.adapter = storyAdapter
 
-        // Initialize ViewModel
         val repository = Injection.provideRepository(applicationContext)
         val factory = StoryViewModelFactory(repository)
         storyViewModel = ViewModelProvider(this, factory).get(StoryViewModel::class.java)
 
-        // Observe LiveData
         storyViewModel.isLoading.observe(this) { isLoading ->
             findViewById<ProgressBar>(R.id.progressBar).visibility = if (isLoading) View.VISIBLE else View.GONE
         }
@@ -73,7 +69,6 @@ class StoryActivity : AppCompatActivity() {
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
 
-        // Fetch stories
         storyViewModel.getStories()
 
         val fabAddStory: FloatingActionButton = findViewById(R.id.fab_add)
@@ -89,7 +84,7 @@ class StoryActivity : AppCompatActivity() {
             }
             val intent = Intent(this, IntroActivity::class.java)
             startActivity(intent)
-            finish() // Close MainActivity to prevent going back
+            finish()
         }
     }
 }

@@ -68,5 +68,4 @@
         app:layout_constraintTop_toBottomOf="@id/btn_login_intro"
         tools:alpha="100" />
 
-
 </androidx.constraintlayout.widget.ConstraintLayout>

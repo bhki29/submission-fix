@@ -23,12 +23,10 @@ class AuthRepository(private val apiService: ApiService) {
             val response = apiService.register(name, email, password)
             Result.success(response)
         } catch (e: HttpException) {
-            // Tangani error jika status tidak 200
             val jsonInString = e.response()?.errorBody()?.string()
             val errorBody = Gson().fromJson(jsonInString, ErrorResponse::class.java)
             Result.failure(Exception(errorBody.message))
         } catch (e: Exception) {
-            // Tangani error lainnya
             Result.failure(e)
         }
     }

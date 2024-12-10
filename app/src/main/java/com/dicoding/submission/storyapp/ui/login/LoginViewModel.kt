@@ -28,7 +28,6 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
             try {
                 val result = authRepository.login(email, password)
 
-                // Handle success
                 result.fold(
                     onSuccess = {
                         _loginResponse.value = it
@@ -39,12 +38,10 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
                     }
                 )
             } catch (e: HttpException) {
-                // Handle HTTP error
                 val errorBody = e.response()?.errorBody()?.string()
                 val errorResponse = Gson().fromJson(errorBody, ErrorResponse::class.java)
                 _message.value = errorResponse.message ?: "An error occurred"
             } catch (e: Exception) {
-                // Handle general error
                 _message.value = "Unexpected error: ${e.localizedMessage}"
             } finally {
                 _isLoading.value = false

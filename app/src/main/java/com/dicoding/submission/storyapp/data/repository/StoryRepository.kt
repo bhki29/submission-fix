@@ -14,7 +14,7 @@ class StoryRepository(
 ) {
 
     suspend fun getStories(): StoryResponse {
-        return apiService.getStories() // Token ditambahkan oleh interceptor
+        return apiService.getStories()
     }
 
     suspend fun uploadStory(description: String, photo: MultipartBody.Part): BaseResponse {

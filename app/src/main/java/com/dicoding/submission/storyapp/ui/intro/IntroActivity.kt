@@ -22,14 +22,13 @@ class IntroActivity : AppCompatActivity() {
         binding = ActivityIntroBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Cek apakah pengguna sudah login
         lifecycleScope.launchWhenCreated {
             DataStoreHelper.isLoggedIn(applicationContext).collect { isLoggedIn ->
                 if (isLoggedIn) {
-                    // Jika sudah login, langsung menuju ke MainActivity tanpa melalui IntroActivity
+
                     val intent = Intent(this@IntroActivity, StoryActivity::class.java)
                     startActivity(intent)
-                    finish() // Tutup IntroActivity agar pengguna tidak bisa kembali
+                    finish()
                     return@collect
                 }
             }

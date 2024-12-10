@@ -19,7 +19,6 @@ class RegisterViewModel(private val authRepository: AuthRepository) : ViewModel(
     private val _registerResponse = MutableLiveData<RegisterResponse?>()
     val registerResponse: LiveData<RegisterResponse?> = _registerResponse
 
-    // Menambahkan LiveData untuk navigasi ke LoginActivity
     private val _navigateToLogin = MutableLiveData<Boolean>()
     val navigateToLogin: LiveData<Boolean> = _navigateToLogin
 
@@ -30,15 +29,11 @@ class RegisterViewModel(private val authRepository: AuthRepository) : ViewModel(
             _isLoading.value = false
             result.fold(
                 onSuccess = {
-                    // Jika berhasil, tampilkan pesan sukses
                     _registerResponse.value = it
                     _message.value = it.message ?: "Registration successful"
-
-                    // Mengatur LiveData untuk navigasi ke LoginActivity
                     _navigateToLogin.value = true
                 },
                 onFailure = {
-                    // Jika gagal, tampilkan pesan error
                     _message.value = it.localizedMessage ?: "An error occurred"
                 }
             )
