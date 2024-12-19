@@ -11,6 +11,7 @@
         android:id="@+id/iv_register"
         android:layout_width="250dp"
         android:layout_height="250dp"
+        android:contentDescription="@string/register"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

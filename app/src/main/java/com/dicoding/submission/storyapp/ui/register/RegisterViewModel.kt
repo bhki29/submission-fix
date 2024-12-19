@@ -17,7 +17,6 @@ class RegisterViewModel(private val authRepository: AuthRepository) : ViewModel(
     val message: LiveData<String> = _message
 
     private val _registerResponse = MutableLiveData<RegisterResponse?>()
-    val registerResponse: LiveData<RegisterResponse?> = _registerResponse
 
     private val _navigateToLogin = MutableLiveData<Boolean>()
     val navigateToLogin: LiveData<Boolean> = _navigateToLogin

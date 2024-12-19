@@ -21,7 +21,6 @@ class StoryRepository(
         return apiService.uploadStory(description.toRequestBody("text/plain".toMediaType()), photo)
     }
 
-
     companion object {
         @Volatile
         private var instance: StoryRepository? = null

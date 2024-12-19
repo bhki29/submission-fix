@@ -25,8 +25,7 @@ object DataStoreHelper {
 
     suspend fun clearLoginSession(context: Context) {
         context.dataStore.edit { preferences ->
-            preferences.remove(TOKEN_KEY)
-            preferences[IS_LOGGED_IN_KEY] = false
+            preferences.clear()
         }
     }
 

@@ -22,4 +22,5 @@
     <string name="already_have_an_account_login">Already have an account? Login</string>
     <string name="photo">photo detail</string>
     <string name="welcome_to_story_app">Welcome To Story App</string>
+    <string name="please_enter_valid_email_and_password">Please enter valid email and password</string>
 </resources>
