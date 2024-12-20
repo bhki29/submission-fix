@@ -13,8 +13,8 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
 import com.google.android.gms.maps.model.MarkerOptions
 import kotlinx.coroutines.runBlocking
 
@@ -38,9 +38,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapsViewModel = ViewModelProvider(this, factory)[MapsViewModel::class.java]
 
         // Observe live data to update map once data is fetched
-        mapsViewModel.stories.observe(this, { stories ->
-            addManyMarker(stories)
-        })
+        mapsViewModel.stories.observe(this) { stories ->
+            addManyMarker(stories)  // Tambahkan marker ke peta
+        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
@@ -61,20 +61,32 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun addManyMarker(stories: List<ListStoryItem>) {
+
+        val boundsBuilder = LatLngBounds.Builder()  // Inisialisasi boundsBuilder di sini
+
         stories.forEach { story ->
-            val latLng = LatLng(story.lat as Double, story.lon as Double)
+            val latLng = LatLng(story.lat as Double, story.lon as Double)  // Gunakan lat dan lon
             mMap.addMarker(MarkerOptions()
                 .position(latLng)
                 .title(story.name)
                 .snippet(story.description))
+
+            // Tambahkan setiap marker ke boundsBuilder
+            boundsBuilder.include(latLng)
         }
+
+        // Jika ada marker, buat LatLngBounds dan sesuaikan kamera
         if (stories.isNotEmpty()) {
-            val firstStory = stories[0]
-            val cameraPosition = CameraPosition.Builder()
-                .target(LatLng(firstStory.lat as Double, firstStory.lon as Double))
-                .zoom(10f)
-                .build()
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
+            val bounds: LatLngBounds = boundsBuilder.build()
+            mMap.animateCamera(
+                CameraUpdateFactory.newLatLngBounds(
+                    bounds,
+                    resources.displayMetrics.widthPixels,
+                    resources.displayMetrics.heightPixels,
+                    300
+                )
+            )
         }
     }
 }
+

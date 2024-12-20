@@ -1,5 +1,6 @@
 package com.dicoding.submission.storyapp.data.repository
 
+import com.dicoding.submission.storyapp.data.paging.StoryPagingSource
 import com.dicoding.submission.storyapp.data.pref.UserPreference
 import com.dicoding.submission.storyapp.data.response.BaseResponse
 import com.dicoding.submission.storyapp.data.response.StoryResponse
@@ -19,6 +20,10 @@ class StoryRepository(
 
     suspend fun uploadStory(description: String, photo: MultipartBody.Part): BaseResponse {
         return apiService.uploadStory(description.toRequestBody("text/plain".toMediaType()), photo)
+    }
+
+    fun getStoryPagingSource(): StoryPagingSource {
+        return StoryPagingSource(apiService)
     }
 
     companion object {

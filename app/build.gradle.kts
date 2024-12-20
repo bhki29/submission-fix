@@ -69,6 +69,11 @@ dependencies {
     implementation (libs.glide)
 
     //maps
-    implementation ("com.google.android.gms:play-services-maps:18.0.2")
+    implementation (libs.play.services.maps.v1802)
+
+    //paging
+    implementation(libs.androidx.paging.runtime.ktx)
+
+
 
 }
