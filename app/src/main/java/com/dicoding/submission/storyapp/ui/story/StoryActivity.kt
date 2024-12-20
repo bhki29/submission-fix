@@ -31,19 +31,15 @@ class StoryActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // Inflate the layout using ViewBinding
         binding = ActivityStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Set up RecyclerView with ViewBinding
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Set up the toolbar using ViewBinding
         val toolbar: Toolbar = findViewById(R.id.include_toolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.title = "Story App"
 
-        // Initialize the adapter
         storyPagingDataAdapter = StoryPagingAdapter { storyId ->
             val intent = Intent(this, DetailActivity::class.java).apply {
                 putExtra("STORY_ID", storyId)
@@ -57,35 +53,29 @@ class StoryActivity : AppCompatActivity() {
             }
         )
 
-        // Set up ViewModel using the repository
         val repository = Injection.provideRepository(applicationContext)
         val factory = StoryViewModelFactory(repository)
         storyViewModel = ViewModelProvider(this, factory).get(StoryViewModel::class.java)
 
-        // Observe loading state
         storyViewModel.isLoading.observe(this) { isLoading ->
             binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
-        // Observe paging data and submit to the adapter
         storyViewModel.stories.observe(this) { pagingData ->
             lifecycleScope.launch {
                 storyPagingDataAdapter.submitData(pagingData)
             }
         }
 
-        // Observe error or message
         storyViewModel.message.observe(this) { message ->
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
         }
 
-        // Floating action button to add new story
         binding.fabAdd.setOnClickListener {
             val intent = Intent(this, AddStoryActivity::class.java)
             startActivity(intent)
         }
 
-        // Logout button to clear session
         val logoutButton: ImageView = findViewById(R.id.btn_logout)
         logoutButton.setOnClickListener {
             lifecycleScope.launch {
@@ -96,7 +86,6 @@ class StoryActivity : AppCompatActivity() {
             finish()
         }
 
-        //maps
         val mapsButton : ImageView = findViewById(R.id.btn_maps)
         mapsButton.setOnClickListener {
             val intent = Intent(this, MapsActivity::class.java)

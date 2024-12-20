@@ -37,12 +37,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val factory = MapsViewModelFactory(repository)
         mapsViewModel = ViewModelProvider(this, factory)[MapsViewModel::class.java]
 
-        // Observe live data to update map once data is fetched
+
         mapsViewModel.stories.observe(this) { stories ->
-            addManyMarker(stories)  // Tambahkan marker ke peta
+            addManyMarker(stories)
         }
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
@@ -56,26 +55,23 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.uiSettings.isCompassEnabled = true
         mMap.uiSettings.isMapToolbarEnabled = true
 
-        // Fetch stories with location
         mapsViewModel.fetchStoriesWithLocation()
     }
 
     private fun addManyMarker(stories: List<ListStoryItem>) {
 
-        val boundsBuilder = LatLngBounds.Builder()  // Inisialisasi boundsBuilder di sini
+        val boundsBuilder = LatLngBounds.Builder()
 
         stories.forEach { story ->
-            val latLng = LatLng(story.lat as Double, story.lon as Double)  // Gunakan lat dan lon
+            val latLng = LatLng(story.lat as Double, story.lon as Double)
             mMap.addMarker(MarkerOptions()
                 .position(latLng)
                 .title(story.name)
                 .snippet(story.description))
 
-            // Tambahkan setiap marker ke boundsBuilder
             boundsBuilder.include(latLng)
         }
 
-        // Jika ada marker, buat LatLngBounds dan sesuaikan kamera
         if (stories.isNotEmpty()) {
             val bounds: LatLngBounds = boundsBuilder.build()
             mMap.animateCamera(

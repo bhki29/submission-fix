@@ -15,7 +15,6 @@ class StoryPagingSource(private val apiService: ApiService) : PagingSource<Int, 
             val position = params.key ?: INITIAL_PAGE_INDEX
             val responseData = apiService.getStories(position, params.loadSize)
 
-            // Filter null values from listStory
             val stories = responseData.listStory?.filterNotNull() ?: emptyList()
 
             LoadResult.Page(

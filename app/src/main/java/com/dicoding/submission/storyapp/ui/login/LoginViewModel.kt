@@ -31,7 +31,7 @@ class LoginViewModel(private val authRepository: AuthRepository) : ViewModel() {
                 result.fold(
                     onSuccess = {
                         _loginResponse.value = it
-                        _message.value = it.message
+                        _message.value = it.message ?: "success"
                     },
                     onFailure = {
                         _message.value = it.localizedMessage

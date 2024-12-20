@@ -1,7 +1,6 @@
 package com.dicoding.submission.storyapp.ui.detail
 
 import android.os.Bundle
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
@@ -24,13 +23,10 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Ambil ID dari Intent
         val storyId = intent.getStringExtra("STORY_ID") ?: return
 
-        // Inisialisasi Repository
         storyRepository = Injection.provideRepository(this)
 
-        // Ambil Detail Story
         fetchStoryDetail(storyId)
     }
 

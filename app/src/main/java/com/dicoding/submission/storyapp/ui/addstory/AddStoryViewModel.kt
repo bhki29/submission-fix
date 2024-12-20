@@ -1,5 +1,6 @@
 package com.dicoding.submission.storyapp.ui.addstory
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,7 +11,7 @@ import okhttp3.MultipartBody
 
 class AddStoryViewModel(private val storyRepository: StoryRepository) : ViewModel() {
     private val _uploadResult = MutableLiveData<BaseResponse>()
-//    val uploadResult: LiveData<BaseResponse> = _uploadResult
+    val uploadResult: LiveData<BaseResponse> = _uploadResult
 
     fun uploadStory(description: String, photo: MultipartBody.Part) {
         viewModelScope.launch {
