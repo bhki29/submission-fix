@@ -31,6 +31,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         setContentView(binding.root)
 
         val token = runBlocking { DataStoreHelper.getToken(applicationContext) }
+
         val apiService = ApiConfig.getApiService(token)
         val repository = MapsRepository(apiService)
         val factory = MapsViewModelFactory(repository)
@@ -38,7 +39,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Observe live data to update map once data is fetched
         mapsViewModel.stories.observe(this, { stories ->
-            addMarkersOnMap(stories)
+            addManyMarker(stories)
         })
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -59,15 +60,18 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mapsViewModel.fetchStoriesWithLocation()
     }
 
-    private fun addMarkersOnMap(stories: List<ListStoryItem>) {
+    private fun addManyMarker(stories: List<ListStoryItem>) {
         stories.forEach { story ->
-            val latLng = LatLng(story.lat ?: 0.0, story.lon ?: 0.0)
-            mMap.addMarker(MarkerOptions().position(latLng).title(story.name))
+            val latLng = LatLng(story.lat as Double, story.lon as Double)
+            mMap.addMarker(MarkerOptions()
+                .position(latLng)
+                .title(story.name)
+                .snippet(story.description))
         }
         if (stories.isNotEmpty()) {
             val firstStory = stories[0]
             val cameraPosition = CameraPosition.Builder()
-                .target(LatLng(firstStory.lat ?: 0.0, firstStory.lon ?: 0.0))
+                .target(LatLng(firstStory.lat as Double, firstStory.lon as Double))
                 .zoom(10f)
                 .build()
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition))
