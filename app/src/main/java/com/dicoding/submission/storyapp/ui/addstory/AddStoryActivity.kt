@@ -25,8 +25,10 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
 class AddStoryActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityAddStoryBinding
     private var currentImageUri: Uri? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
@@ -35,9 +37,11 @@ class AddStoryActivity : AppCompatActivity() {
         binding.cameraButton.setOnClickListener { startCamera() }
         binding.uploadButton.setOnClickListener { uploadImage() }
     }
+
     private fun startGallery() {
         launcherGallery.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
+
     private val launcherGallery = registerForActivityResult(
         ActivityResultContracts.PickVisualMedia()
     ) { uri: Uri? ->
@@ -48,10 +52,12 @@ class AddStoryActivity : AppCompatActivity() {
             Log.d("Photo Picker", "No media selected")
         }
     }
+
     private fun startCamera() {
         currentImageUri = getImageUri(this)
         launcherIntentCamera.launch(currentImageUri!!)
     }
+
     private val launcherIntentCamera = registerForActivityResult(
         ActivityResultContracts.TakePicture()
     ) { isSuccess ->
@@ -61,12 +67,14 @@ class AddStoryActivity : AppCompatActivity() {
             currentImageUri = null
         }
     }
+
     private fun showImage() {
         currentImageUri?.let {
             Log.d("Image URI", "showImage: $it")
             binding.ivPreview.setImageURI(it)
         }
     }
+
     private fun uploadImage() {
         val description = binding.description.text.toString()
         if (currentImageUri == null || description.isBlank()) {

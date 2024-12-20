@@ -3,34 +3,24 @@ package com.dicoding.submission.storyapp.ui.register
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.dicoding.submission.storyapp.R
-import com.dicoding.submission.storyapp.costumview.CustomEmail
-import com.dicoding.submission.storyapp.costumview.CustomPassword
 import com.dicoding.submission.storyapp.data.repository.AuthRepository
 import com.dicoding.submission.storyapp.data.retrofit.ApiConfig
+import com.dicoding.submission.storyapp.databinding.ActivityRegisterBinding
 import com.dicoding.submission.storyapp.ui.login.LoginActivity
 
 class RegisterActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityRegisterBinding
     private lateinit var registerViewModel: RegisterViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_register)
-
-        val nameEditText = findViewById<EditText>(R.id.nameEditText)
-        val emailEditText = findViewById<CustomEmail>(R.id.emailEditText)
-        val passwordEditText = findViewById<CustomPassword>(R.id.customPassword)
-        val registerButton = findViewById<Button>(R.id.btn_register)
-        val progressBar = findViewById<ProgressBar>(R.id.progressBar)
-        val txtGoToLogin = findViewById<TextView>(R.id.txtGoToLogin)
+        binding = ActivityRegisterBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         val apiService = ApiConfig.getApiService()
         val repository = AuthRepository(apiService)
@@ -38,7 +28,7 @@ class RegisterActivity : AppCompatActivity() {
         registerViewModel = ViewModelProvider(this, factory)[RegisterViewModel::class.java]
 
         registerViewModel.isLoading.observe(this) { isLoading ->
-            progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
+            binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         }
 
         registerViewModel.message.observe(this) { message ->
@@ -53,23 +43,25 @@ class RegisterActivity : AppCompatActivity() {
             }
         }
 
-        registerButton.setOnClickListener {
-            val name = nameEditText.text.toString().trim()
-            val email = emailEditText.text.toString().trim()
-            val password = passwordEditText.text.toString().trim()
+        binding.btnRegister.setOnClickListener {
+            val name = binding.nameEditText.text.toString().trim()
+            val email = binding.emailEditText.text.toString().trim()
+            val password = binding.customPassword.text.toString().trim()
 
             if (name.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
                 registerViewModel.register(name, email, password)
             } else {
-                Toast.makeText(this, "Please fill in all available fields", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this,
+                    getString(R.string.please_fill_in_all_available_fields), Toast.LENGTH_SHORT).show()
             }
         }
 
-        txtGoToLogin.setOnClickListener {
+        binding.txtGoToLogin.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
             startActivity(intent)
         }
     }
 }
+
 
 
