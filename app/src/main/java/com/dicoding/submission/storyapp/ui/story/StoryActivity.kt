@@ -19,6 +19,7 @@ import com.dicoding.submission.storyapp.di.Injection
 import com.dicoding.submission.storyapp.ui.addstory.AddStoryActivity
 import com.dicoding.submission.storyapp.ui.detail.DetailActivity
 import com.dicoding.submission.storyapp.ui.intro.IntroActivity
+import com.dicoding.submission.storyapp.ui.maps.MapsActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 
@@ -86,6 +87,14 @@ class StoryActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+
+        //maps
+        val mapsButton : ImageView = findViewById(R.id.btn_maps)
+        mapsButton.setOnClickListener {
+            val intent = Intent(this, MapsActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 }
 
