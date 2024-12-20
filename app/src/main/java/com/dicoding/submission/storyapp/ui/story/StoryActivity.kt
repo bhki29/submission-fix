@@ -12,7 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dicoding.submission.storyapp.R
 import com.dicoding.submission.storyapp.data.adapter.LoadingStateAdapter
-import com.dicoding.submission.storyapp.data.paging.StoryPagingAdapter
+import com.dicoding.submission.storyapp.data.adapter.StoryPagingAdapter
 import com.dicoding.submission.storyapp.data.pref.DataStoreHelper
 import com.dicoding.submission.storyapp.databinding.ActivityStoryBinding
 import com.dicoding.submission.storyapp.di.Injection
@@ -20,7 +20,6 @@ import com.dicoding.submission.storyapp.ui.addstory.AddStoryActivity
 import com.dicoding.submission.storyapp.ui.detail.DetailActivity
 import com.dicoding.submission.storyapp.ui.intro.IntroActivity
 import com.dicoding.submission.storyapp.ui.maps.MapsActivity
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class StoryActivity : AppCompatActivity() {
@@ -69,8 +68,8 @@ class StoryActivity : AppCompatActivity() {
         }
 
         // Observe paging data and submit to the adapter
-        lifecycleScope.launchWhenStarted {
-            storyViewModel.stories.collectLatest { pagingData ->
+        storyViewModel.stories.observe(this) { pagingData ->
+            lifecycleScope.launch {
                 storyPagingDataAdapter.submitData(pagingData)
             }
         }
@@ -104,8 +103,6 @@ class StoryActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
-
 }
 
 
